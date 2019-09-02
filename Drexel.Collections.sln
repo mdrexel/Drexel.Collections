@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29215.179
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A6B95363-5FA2-41AE-93AB-0BA910131487}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{7F837836-3964-4215-91DA-583FBA6924C7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drexel.Collections.Graphs.Interfaces", "src\Drexel.Collections.Graphs.Interfaces\Drexel.Collections.Graphs.Interfaces.csproj", "{CD9301FD-F42F-4075-AF2C-CD6E7491DDA6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5ACD25CA-A6DC-4E86-8A08-FF320432ED30}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".StyleCop", ".StyleCop", "{581D9029-1842-49BF-A72C-95DC061238C1}"
+	ProjectSection(SolutionItems) = preProject
+		Solution_Items\.StyleCop\CodeAnalysisDictionary.xml = Solution_Items\.StyleCop\CodeAnalysisDictionary.xml
+		Solution_Items\.StyleCop\Drexel.Collections.MSTest.ruleset = Solution_Items\.StyleCop\Drexel.Collections.MSTest.ruleset
+		Solution_Items\.StyleCop\Drexel.Collections.ruleset = Solution_Items\.StyleCop\Drexel.Collections.ruleset
+		Solution_Items\.StyleCop\stylecop.json = Solution_Items\.StyleCop\stylecop.json
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drexel.Collections.Graphs.Implementations", "src\Drexel.Collections.Graphs.Implementations\Drexel.Collections.Graphs.Implementations.csproj", "{29C3428D-4C34-4A86-8341-567DAFABC12A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drexel.Collections.Graphs.Implementations.Tests", "tests\Drexel.Collections.Graphs.Implementations.Tests\Drexel.Collections.Graphs.Implementations.Tests.csproj", "{17CCEEC9-D44C-4088-AB9F-849417320282}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CD9301FD-F42F-4075-AF2C-CD6E7491DDA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD9301FD-F42F-4075-AF2C-CD6E7491DDA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD9301FD-F42F-4075-AF2C-CD6E7491DDA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD9301FD-F42F-4075-AF2C-CD6E7491DDA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29C3428D-4C34-4A86-8341-567DAFABC12A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29C3428D-4C34-4A86-8341-567DAFABC12A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29C3428D-4C34-4A86-8341-567DAFABC12A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29C3428D-4C34-4A86-8341-567DAFABC12A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17CCEEC9-D44C-4088-AB9F-849417320282}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17CCEEC9-D44C-4088-AB9F-849417320282}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17CCEEC9-D44C-4088-AB9F-849417320282}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17CCEEC9-D44C-4088-AB9F-849417320282}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CD9301FD-F42F-4075-AF2C-CD6E7491DDA6} = {A6B95363-5FA2-41AE-93AB-0BA910131487}
+		{581D9029-1842-49BF-A72C-95DC061238C1} = {5ACD25CA-A6DC-4E86-8A08-FF320432ED30}
+		{29C3428D-4C34-4A86-8341-567DAFABC12A} = {A6B95363-5FA2-41AE-93AB-0BA910131487}
+		{17CCEEC9-D44C-4088-AB9F-849417320282} = {7F837836-3964-4215-91DA-583FBA6924C7}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4B0C1752-3055-4844-B6A0-9F770704176F}
+	EndGlobalSection
+EndGlobal
