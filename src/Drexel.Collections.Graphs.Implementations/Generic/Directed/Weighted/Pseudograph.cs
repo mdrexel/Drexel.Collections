@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Drexel.Collections.Generic.Directed.Weighted.StronglyConnected;
-using Drexel.Collections.Generic.Directed.Weighted.WeaklyConnected;
-using Drexel.Collections.ObjectModel;
 
 namespace Drexel.Collections.Generic.Directed.Weighted
 {
@@ -37,15 +32,7 @@ namespace Drexel.Collections.Generic.Directed.Weighted
 
         public bool Add(T vertex)
         {
-            if (this.adjacencyLists.ContainsKey(vertex))
-            {
-                return false;
-            }
-            else
-            {
-                this.adjacencyLists.Add(vertex, new FastRemoveCollection<E>(this.edgeComparer));
-                return true;
-            }
+            return this.adjacencyLists.Add(vertex, new FastRemoveCollection<E>(this.edgeComparer));
         }
 
         public void Add(E edge)

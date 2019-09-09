@@ -17,20 +17,8 @@ namespace Drexel.Collections
 #pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
 #pragma warning restore CA1305 // Specify IFormatProvider
 
-        private static Dictionary<string, int> HasNull { get; } =
-            new Dictionary<string, int>()
-            {
-                [NullKey] = 0
-            };
-
         private static Dictionary<string, int> DoesntHaveNull { get; } =
             new Dictionary<string, int>(0);
-
-        [DebuggerHidden]
-        public static void ThrowDuplicateNullKeyException()
-        {
-            NullDictionary.HasNull.Add(NullDictionary.NullKey, 0);
-        }
 
         [DebuggerHidden]
         public static void ThrowNullKeyNotFoundException()
@@ -105,23 +93,29 @@ namespace Drexel.Collections
 
         public IReadOnlyCollection<TValue> Values { get; }
 
-        public void Add(TKey key, TValue value)
+        public bool Add(TKey key, TValue value)
         {
             if (object.ReferenceEquals(key, null))
             {
                 if (this.hasNull)
                 {
-                    NullDictionary.ThrowDuplicateNullKeyException();
+                    return false;
                 }
                 else
                 {
                     this.hasNull = true;
                     this.nullValue = value;
+                    return true;
                 }
+            }
+            else if (this.dictionary.ContainsKey(key))
+            {
+                return false;
             }
             else
             {
                 this.dictionary.Add(key, value);
+                return true;
             }
         }
 
