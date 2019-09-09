@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Drexel.Collections.Generic.Directed.Weighted.StronglyConnected
+namespace Drexel.Collections.Generic.Directed.Weighted.WeaklyConnected
 {
     internal class Pseudograph<T, W, E> : IReadOnlyPseudograph<T, W, E>
         where E : IReadOnlyEdge<T, W>
@@ -17,12 +17,12 @@ namespace Drexel.Collections.Generic.Directed.Weighted.StronglyConnected
 
         public IReadOnlyCollection<E> Edges { get; }
 
-        public IEnumerable<IReadOnlyPseudograph<T, W, E>> GetStronglyConnectedComponents()
+        public IEnumerable<StronglyConnected.IReadOnlyPseudograph<T, W, E>> GetStronglyConnectedComponents()
         {
-            yield return this;
+            return Utilities.CalculateStronglyConnectedComponents<T, W, E>(this.Vertices, this.Edges);
         }
 
-        public IEnumerable<WeaklyConnected.IReadOnlyPseudograph<T, W, E>> GetWeaklyConnectedComponents()
+        public IEnumerable<IReadOnlyPseudograph<T, W, E>> GetWeaklyConnectedComponents()
         {
             yield return this;
         }
