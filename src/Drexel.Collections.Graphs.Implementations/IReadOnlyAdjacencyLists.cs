@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
+using Drexel.Collections.Generic;
 
 namespace Drexel.Collections
 {
-    internal interface IReadOnlyNullDictionary<TKey, TValue> : IReadOnlyCollection<KeyValuePair<TKey, TValue>>
+    internal interface IReadOnlyAdjacencyLists<TKey, TValue, TInnerValue> : IReadOnlyCollection<KeyValuePair<TKey, TValue>>
+        where TValue : IReadOnlyCollection<TInnerValue>
     {
         TValue this[TKey key] { get; }
 
-        IReadOnlyCollection<TKey> Keys { get; }
+        IReadOnlySet<TKey> Keys { get; }
 
         IReadOnlyCollection<TValue> Values { get; }
 

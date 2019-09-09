@@ -5,10 +5,10 @@ namespace Drexel.Collections.Generic.Directed.Weighted.WeaklyConnected
     internal class Pseudograph<T, W, E> : IReadOnlyPseudograph<T, W, E>
         where E : IReadOnlyEdge<T, W>
     {
-        private readonly IReadOnlyNullDictionary<T, IReadOnlyCollection<E>> adjacencyLists;
+        private readonly IReadOnlyAdjacencyLists<T, IReadOnlyCollection<E>, E> adjacencyLists;
 
         internal Pseudograph(
-            IReadOnlyNullDictionary<T, IReadOnlyCollection<E>> adjacencyLists,
+            IReadOnlyAdjacencyLists<T, IReadOnlyCollection<E>, E> adjacencyLists,
             IReadOnlyCollection<E> edges)
         {
             this.adjacencyLists = adjacencyLists;

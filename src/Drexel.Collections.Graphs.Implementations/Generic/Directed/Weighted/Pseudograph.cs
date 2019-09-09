@@ -9,7 +9,7 @@ namespace Drexel.Collections.Generic.Directed.Weighted
         private readonly IEqualityComparer<T> vertexComparer;
         private readonly IEqualityComparer<E> edgeComparer;
 
-        private readonly NullDictionary<T, FastRemoveCollection<E>> adjacencyLists;
+        private readonly AdjacencyLists<T, FastRemoveCollection<E>, E> adjacencyLists;
         private readonly FastRemoveCollection<E> edges;
 
         public Pseudograph(
@@ -19,10 +19,10 @@ namespace Drexel.Collections.Generic.Directed.Weighted
             this.vertexComparer = vertexComparer ?? throw new ArgumentNullException(nameof(vertexComparer));
             this.edgeComparer = edgeComparer ?? throw new ArgumentNullException(nameof(edgeComparer));
 
-            this.adjacencyLists = new NullDictionary<T, FastRemoveCollection<E>>(this.vertexComparer);
+            this.adjacencyLists = new AdjacencyLists<T, FastRemoveCollection<E>, E>(this.vertexComparer);
             this.edges = new FastRemoveCollection<E>(edgeComparer);
 
-            this.Vertices = new CollectionSetAdapter<T>(this.adjacencyLists.Keys);
+            this.Vertices = this.adjacencyLists.Keys;
             this.Edges = this.edges;
         }
 

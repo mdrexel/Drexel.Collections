@@ -3,13 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Drexel.Collections.Generic;
 
 namespace Drexel.Collections
 {
     // This is a goofy way of sussing out the system "duplicate key" exception. Unfortunately, the ThrowHelper is
     // considered "internal" (which makes sense I guess, since it changed between Framework and Core), so there's no
     // way for us to easily throw the expected exception.
-    internal static class NullDictionary
+    internal static class AdjacencyLists
     {
 #pragma warning disable CA1305 // Specify IFormatProvider - Intentional, we want to use the locale we're running in.
 #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type. - Intentional
@@ -23,11 +24,13 @@ namespace Drexel.Collections
         [DebuggerHidden]
         public static void ThrowNullKeyNotFoundException()
         {
-            _ = NullDictionary.DoesntHaveNull[NullDictionary.NullKey];
+            _ = AdjacencyLists.DoesntHaveNull[AdjacencyLists.NullKey];
         }
     }
 
-    internal sealed class NullDictionary<TKey, TValue> : IReadOnlyNullDictionary<TKey, TValue>
+    internal sealed class AdjacencyLists<TKey, TValue, TInnerValue> :
+        IReadOnlyAdjacencyLists<TKey, TValue, TInnerValue>
+        where TValue : IReadOnlyCollection<TInnerValue>
     {
         private readonly IEqualityComparer<TKey> comparer;
         private readonly Dictionary<TKey, TValue> dictionary;
@@ -35,7 +38,7 @@ namespace Drexel.Collections
         private bool hasNull;
         private TValue nullValue;
 
-        public NullDictionary(IEqualityComparer<TKey> comparer)
+        public AdjacencyLists(IEqualityComparer<TKey> comparer)
         {
             IReadOnlyDictionary<TKey, TValue> foo = default;
             this.comparer = comparer;
@@ -45,7 +48,7 @@ namespace Drexel.Collections
             this.nullValue = default; // Safe because access is guarded by `hasNull`.
 #pragma warning restore CS8653 // A default expression introduces a null value for a type parameter.
 
-            this.Keys = new KeysCollectionAdapter(this);
+            this.Keys = new KeysSetAdapter(this);
             this.Values = new ValuesCollectionAdapter(this);
         }
 
@@ -61,7 +64,7 @@ namespace Drexel.Collections
                     }
                     else
                     {
-                        NullDictionary.ThrowNullKeyNotFoundException();
+                        AdjacencyLists.ThrowNullKeyNotFoundException();
 #pragma warning disable CS8653 // A default expression introduces a null value for a type parameter.
                         return default; // This never gets hit, it's not smart enough to realize we threw an exception.
 #pragma warning restore CS8653 // A default expression introduces a null value for a type parameter.
@@ -89,7 +92,7 @@ namespace Drexel.Collections
 
         public int Count => this.hasNull ? this.dictionary.Count + 1 : this.dictionary.Count;
 
-        public IReadOnlyCollection<TKey> Keys { get; }
+        public IReadOnlySet<TKey> Keys { get; }
 
         public IReadOnlyCollection<TValue> Values { get; }
 
@@ -154,10 +157,11 @@ namespace Drexel.Collections
             }
         }
 
-        public NullDictionary<TKey, TValue> ShallowClone()
+        public AdjacencyLists<TKey, TValue, TInnerValue> ShallowClone()
         {
             // TODO: There's probably a more efficient way to handle this, but it's fine for now I guess
-            NullDictionary<TKey, TValue> retVal = new NullDictionary<TKey, TValue>(this.comparer);
+            AdjacencyLists<TKey, TValue, TInnerValue> retVal =
+                new AdjacencyLists<TKey, TValue, TInnerValue>(this.comparer);
             foreach (KeyValuePair<TKey, TValue> kvp in this)
             {
                 retVal.Add(kvp.Key, kvp.Value);
@@ -210,16 +214,16 @@ namespace Drexel.Collections
 
         IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
 
-        private class KeysCollectionAdapter : IReadOnlyCollection<TKey>
+        private class KeysSetAdapter : IReadOnlySet<TKey>
         {
 #pragma warning disable CS8653 // A default expression introduces a null value for a type parameter.
             // This is safe because the only way they introduced null was if the compiler checked it on Add.
             private static readonly IEnumerable<TKey> NullKey = new TKey[] { default };
 #pragma warning restore CS8653 // A default expression introduces a null value for a type parameter.
 
-            private readonly NullDictionary<TKey, TValue> parent;
+            private readonly AdjacencyLists<TKey, TValue, TInnerValue> parent;
 
-            public KeysCollectionAdapter(NullDictionary<TKey, TValue> parent)
+            public KeysSetAdapter(AdjacencyLists<TKey, TValue, TInnerValue> parent)
             {
                 this.parent = parent;
             }
@@ -238,7 +242,7 @@ namespace Drexel.Collections
             {
                 if (this.parent.hasNull)
                 {
-                    return this.parent.dictionary.Keys.Concat(KeysCollectionAdapter.NullKey).GetEnumerator();
+                    return this.parent.dictionary.Keys.Concat(KeysSetAdapter.NullKey).GetEnumerator();
                 }
                 else
                 {
@@ -251,9 +255,9 @@ namespace Drexel.Collections
 
         private class ValuesCollectionAdapter : IReadOnlyCollection<TValue>
         {
-            private readonly NullDictionary<TKey, TValue> parent;
+            private readonly AdjacencyLists<TKey, TValue, TInnerValue> parent;
 
-            public ValuesCollectionAdapter(NullDictionary<TKey, TValue> parent)
+            public ValuesCollectionAdapter(AdjacencyLists<TKey, TValue, TInnerValue> parent)
             {
                 this.parent = parent;
             }

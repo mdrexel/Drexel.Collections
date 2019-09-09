@@ -61,9 +61,10 @@ namespace Drexel.Collections.Graphs.Tests
         [TestMethod]
         public void TestMethod2()
         {
-            NullDictionary<string?, int> foo = new NullDictionary<string?, int>(EqualityComparer<string?>.Default);
-            foo.Add(null, 1);
-            Assert.ThrowsException<ArgumentException>(() => foo.Add(null, 2));
+            AdjacencyLists<string?, List<int>, int> foo =
+                new AdjacencyLists<string?, List<int>, int>(EqualityComparer<string?>.Default);
+            Assert.IsTrue(foo.Add(null, new List<int>(12)));
+            Assert.IsFalse(foo.Add(null, new List<int>(12)));
         }
     }
 }
