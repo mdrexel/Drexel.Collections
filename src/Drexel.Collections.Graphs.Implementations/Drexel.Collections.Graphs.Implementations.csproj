@@ -30,4 +30,8 @@
     <ProjectReference Include="..\Drexel.Collections.Graphs.Interfaces\Drexel.Collections.Graphs.Interfaces.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Generic\Directed\Weighted\WeaklyConnected\" />
+  </ItemGroup>
+
 </Project>

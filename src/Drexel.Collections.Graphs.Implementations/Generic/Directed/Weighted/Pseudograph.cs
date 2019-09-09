@@ -33,7 +33,7 @@ namespace Drexel.Collections.Generic.Directed.Weighted
 
         public IReadOnlySet<T> Vertices { get; }
 
-        public IReadOnlyCollection<IReadOnlyEdge<T, W>> Edges { get; }
+        public IReadOnlyCollection<E> Edges { get; }
 
         public bool Add(T vertex)
         {

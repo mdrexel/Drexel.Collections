@@ -7,7 +7,7 @@ namespace Drexel.Collections.Generic.Directed.Weighted
     {
         IReadOnlySet<T> Vertices { get; }
 
-        IReadOnlyCollection<IReadOnlyEdge<T, W>> Edges { get; }
+        IReadOnlyCollection<E> Edges { get; }
 
         IEnumerable<StronglyConnected.IReadOnlyPseudograph<T, W, E>> GetStronglyConnectedComponents();
 
