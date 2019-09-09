@@ -39,7 +39,7 @@ namespace Drexel.Collections
         }
     }
 
-    internal sealed class NullDictionary<TKey, TValue> : IReadOnlyCollection<KeyValuePair<TKey, TValue>>
+    internal sealed class NullDictionary<TKey, TValue> : IReadOnlyNullDictionary<TKey, TValue>
     {
         private readonly IEqualityComparer<TKey> comparer;
         private readonly Dictionary<TKey, TValue> dictionary;

@@ -102,14 +102,14 @@ namespace Drexel.Collections.Generic.Directed.Weighted
 
         public IEnumerable<StronglyConnected.IReadOnlyPseudograph<T, W, E>> GetStronglyConnectedComponents()
         {
-            return Utilities.CalculateStronglyConnectedComponents<T, W, E>(
+            return Utilities.CalculateStronglyConnectedComponents<T, W, E, FastRemoveCollection<E>>(
                 this.adjacencyLists,
                 this.Edges);
         }
 
         public IEnumerable<WeaklyConnected.IReadOnlyPseudograph<T, W, E>> GetWeaklyConnectedComponents()
         {
-            return Utilities.CalculateWeaklyConnectedComponents<T, W, E>(
+            return Utilities.CalculateWeaklyConnectedComponents<T, W, E, FastRemoveCollection<E>>(
                 this.adjacencyLists,
                 this.Edges);
         }
