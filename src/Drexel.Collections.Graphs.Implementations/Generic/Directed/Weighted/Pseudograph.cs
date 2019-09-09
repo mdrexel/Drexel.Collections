@@ -8,7 +8,7 @@ using Drexel.Collections.ObjectModel;
 
 namespace Drexel.Collections.Generic.Directed.Weighted
 {
-    public class Pseudograph<T, W, E> : IReadOnlyPseudograph<T, W> // TODO: need to add E to interfaces; what if the edges had names?
+    public class Pseudograph<T, W, E> : IReadOnlyPseudograph<T, W, E>
         where E : class, IReadOnlyEdge<T, W>
     {
         private readonly IEqualityComparer<T> vertexComparer;
@@ -100,12 +100,12 @@ namespace Drexel.Collections.Generic.Directed.Weighted
             return retVal;
         }
 
-        public IEnumerable<StronglyConnected.IReadOnlyPseudograph<T, W>> GetStronglyConnectedComponents()
+        public IEnumerable<StronglyConnected.IReadOnlyPseudograph<T, W, E>> GetStronglyConnectedComponents()
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<WeaklyConnected.IReadOnlyPseudograph<T, W>> GetWeaklyConnectedComponents()
+        public IEnumerable<WeaklyConnected.IReadOnlyPseudograph<T, W, E>> GetWeaklyConnectedComponents()
         {
             throw new NotImplementedException();
         }
