@@ -14,7 +14,7 @@ namespace Drexel.Collections.Generic.Directed.Weighted
         private readonly IEqualityComparer<T> vertexComparer;
         private readonly IEqualityComparer<E> edgeComparer;
 
-        private readonly NullDictionary<T, FastRemoveCollection<E>> vertexEdgeLookup;
+        private readonly NullDictionary<T, FastRemoveCollection<E>> adjacencyLists;
         private readonly FastRemoveCollection<E> edges;
 
         public Pseudograph(
@@ -24,10 +24,10 @@ namespace Drexel.Collections.Generic.Directed.Weighted
             this.vertexComparer = vertexComparer ?? throw new ArgumentNullException(nameof(vertexComparer));
             this.edgeComparer = edgeComparer ?? throw new ArgumentNullException(nameof(edgeComparer));
 
-            this.vertexEdgeLookup = new NullDictionary<T, FastRemoveCollection<E>>(this.vertexComparer);
+            this.adjacencyLists = new NullDictionary<T, FastRemoveCollection<E>>(this.vertexComparer);
             this.edges = new FastRemoveCollection<E>(edgeComparer);
 
-            this.Vertices = new CollectionSetAdapter<T>(this.vertexEdgeLookup.Keys);
+            this.Vertices = new CollectionSetAdapter<T>(this.adjacencyLists.Keys);
             this.Edges = this.edges;
         }
 
@@ -37,13 +37,13 @@ namespace Drexel.Collections.Generic.Directed.Weighted
 
         public bool Add(T vertex)
         {
-            if (this.vertexEdgeLookup.ContainsKey(vertex))
+            if (this.adjacencyLists.ContainsKey(vertex))
             {
                 return false;
             }
             else
             {
-                this.vertexEdgeLookup.Add(vertex, new FastRemoveCollection<E>(this.edgeComparer));
+                this.adjacencyLists.Add(vertex, new FastRemoveCollection<E>(this.edgeComparer));
                 return true;
             }
         }
@@ -59,15 +59,15 @@ namespace Drexel.Collections.Generic.Directed.Weighted
             this.Add(edge.Head);
             this.Add(edge.Tail);
 
-            this.vertexEdgeLookup[edge.Head].Add(edge);
-            this.vertexEdgeLookup[edge.Tail].Add(edge);
+            this.adjacencyLists[edge.Head].Add(edge);
+            this.adjacencyLists[edge.Tail].Add(edge);
 
             this.edges.Add(edge);
         }
 
         public bool Remove(T vertex, out IReadOnlyCollection<E> removedEdges)
         {
-            if (!this.vertexEdgeLookup.TryGetValue(vertex, out FastRemoveCollection<E> list))
+            if (!this.adjacencyLists.TryGetValue(vertex, out FastRemoveCollection<E> list))
             {
                 removedEdges = Array.Empty<E>();
                 return false;
@@ -79,7 +79,7 @@ namespace Drexel.Collections.Generic.Directed.Weighted
                     this.edges.Remove(edge);
                 }
 
-                this.vertexEdgeLookup.Remove(vertex);
+                this.adjacencyLists.Remove(vertex);
                 removedEdges = list;
                 return true;
             }
@@ -94,20 +94,24 @@ namespace Drexel.Collections.Generic.Directed.Weighted
 
             bool retVal = this.edges.Remove(edge) > 0;
 
-            this.vertexEdgeLookup[edge.Head].Remove(edge);
-            this.vertexEdgeLookup[edge.Tail].Remove(edge);
+            this.adjacencyLists[edge.Head].Remove(edge);
+            this.adjacencyLists[edge.Tail].Remove(edge);
 
             return retVal;
         }
 
         public IEnumerable<StronglyConnected.IReadOnlyPseudograph<T, W, E>> GetStronglyConnectedComponents()
         {
-            throw new NotImplementedException();
+            return Utilities.CalculateStronglyConnectedComponents<T, W, E>(
+                this.adjacencyLists,
+                this.Edges);
         }
 
         public IEnumerable<WeaklyConnected.IReadOnlyPseudograph<T, W, E>> GetWeaklyConnectedComponents()
         {
-            throw new NotImplementedException();
+            return Utilities.CalculateWeaklyConnectedComponents<T, W, E>(
+                this.adjacencyLists,
+                this.Edges);
         }
     }
 }

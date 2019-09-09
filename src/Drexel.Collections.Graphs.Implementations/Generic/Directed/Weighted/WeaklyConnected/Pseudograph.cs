@@ -5,11 +5,17 @@ namespace Drexel.Collections.Generic.Directed.Weighted.WeaklyConnected
     internal class Pseudograph<T, W, E> : IReadOnlyPseudograph<T, W, E>
         where E : IReadOnlyEdge<T, W>
     {
+        private readonly NullDictionary<T, FastRemoveCollection<E>> adjacencyLists;
+        private readonly FastRemoveCollection<E> edges;
+
         internal Pseudograph(
-            IReadOnlySet<T> vertices,
-            IReadOnlyCollection<E> edges)
+            NullDictionary<T, FastRemoveCollection<E>> adjacencyLists,
+            FastRemoveCollection<E> edges)
         {
-            this.Vertices = vertices;
+            this.adjacencyLists = adjacencyLists;
+            this.edges = edges;
+
+            this.Vertices = new CollectionSetAdapter<T>(this.adjacencyLists.Keys);
             this.Edges = edges;
         }
 
@@ -19,7 +25,7 @@ namespace Drexel.Collections.Generic.Directed.Weighted.WeaklyConnected
 
         public IEnumerable<StronglyConnected.IReadOnlyPseudograph<T, W, E>> GetStronglyConnectedComponents()
         {
-            return Utilities.CalculateStronglyConnectedComponents<T, W, E>(this.Vertices, this.Edges);
+            return Utilities.CalculateStronglyConnectedComponents<T, W, E>(this.adjacencyLists, this.edges);
         }
 
         public IEnumerable<IReadOnlyPseudograph<T, W, E>> GetWeaklyConnectedComponents()

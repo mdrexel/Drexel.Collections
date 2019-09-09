@@ -6,7 +6,7 @@ namespace Drexel.Collections.Generic.Directed.Weighted
     internal static class Utilities
     {
         public static IEnumerable<StronglyConnected.IReadOnlyPseudograph<T, W, E>> CalculateStronglyConnectedComponents<T, W, E>(
-            IReadOnlySet<T> vertices,
+            NullDictionary<T, FastRemoveCollection<E>> adjacencyLists,
             IReadOnlyCollection<E> edgeCollection)
             where E : IReadOnlyEdge<T, W>
         {
@@ -17,7 +17,7 @@ namespace Drexel.Collections.Generic.Directed.Weighted
         }
 
         public static IEnumerable<WeaklyConnected.IReadOnlyPseudograph<T, W, E>> CalculateWeaklyConnectedComponents<T, W, E>(
-            IReadOnlySet<T> vertices,
+            NullDictionary<T, FastRemoveCollection<E>> adjacencyLists,
             IReadOnlyCollection<E> edgeCollection)
             where E : IReadOnlyEdge<T, W>
         {
@@ -28,7 +28,7 @@ namespace Drexel.Collections.Generic.Directed.Weighted
         }
 
         public static IEnumerable<StronglyConnected.IReadOnlyGraph<T, W, E>> CalculateStronglyConnectedComponents<T, W, E>(
-            IReadOnlySet<T> vertices,
+            NullDictionary<T, FastRemoveCollection<E>> adjacencyLists,
             IReadOnlySet<E> edgeSet)
             where E : IReadOnlyEdge<T, W>
         {
@@ -37,7 +37,7 @@ namespace Drexel.Collections.Generic.Directed.Weighted
         }
 
         public static IEnumerable<WeaklyConnected.IReadOnlyGraph<T, W, E>> CalculateWeaklyConnectedComponents<T, W, E>(
-            IReadOnlySet<T> vertices,
+            NullDictionary<T, FastRemoveCollection<E>> adjacencyLists,
             IReadOnlySet<E> edgeSet)
             where E : IReadOnlyEdge<T, W>
         {

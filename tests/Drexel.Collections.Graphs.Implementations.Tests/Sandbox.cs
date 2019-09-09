@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Drexel.Collections.Generic.Directed.Weighted;
@@ -55,6 +56,14 @@ namespace Drexel.Collections.Graphs.Tests
                         edge.Tail ?? "<null>",
                         edge.Weight));
             }
+        }
+
+        [TestMethod]
+        public void TestMethod2()
+        {
+            NullDictionary<string?, int> foo = new NullDictionary<string?, int>(EqualityComparer<string?>.Default);
+            foo.Add(null, 1);
+            Assert.ThrowsException<ArgumentException>(() => foo.Add(null, 2));
         }
     }
 }

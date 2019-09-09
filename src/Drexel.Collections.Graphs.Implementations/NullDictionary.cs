@@ -41,6 +41,7 @@ namespace Drexel.Collections
 
     internal sealed class NullDictionary<TKey, TValue> : IReadOnlyCollection<KeyValuePair<TKey, TValue>>
     {
+        private readonly IEqualityComparer<TKey> comparer;
         private readonly Dictionary<TKey, TValue> dictionary;
 
         private bool hasNull;
@@ -48,6 +49,8 @@ namespace Drexel.Collections
 
         public NullDictionary(IEqualityComparer<TKey> comparer)
         {
+            IReadOnlyDictionary<TKey, TValue> foo = default;
+            this.comparer = comparer;
             this.dictionary = new Dictionary<TKey, TValue>(comparer);
             this.hasNull = false;
 #pragma warning disable CS8653 // A default expression introduces a null value for a type parameter.
@@ -155,6 +158,18 @@ namespace Drexel.Collections
             {
                 return this.dictionary.Remove(key);
             }
+        }
+
+        public NullDictionary<TKey, TValue> ShallowClone()
+        {
+            // TODO: There's probably a more efficient way to handle this, but it's fine for now I guess
+            NullDictionary<TKey, TValue> retVal = new NullDictionary<TKey, TValue>(this.comparer);
+            foreach (KeyValuePair<TKey, TValue> kvp in this)
+            {
+                retVal.Add(kvp.Key, kvp.Value);
+            }
+
+            return retVal;
         }
 
         public bool TryGetValue(TKey key, out TValue value)
