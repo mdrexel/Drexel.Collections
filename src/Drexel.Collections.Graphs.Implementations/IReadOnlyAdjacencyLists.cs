@@ -6,11 +6,11 @@ namespace Drexel.Collections
     internal interface IReadOnlyAdjacencyLists<TKey, TValue, TInnerValue> : IReadOnlyCollection<KeyValuePair<TKey, TValue>>
         where TValue : IReadOnlyCollection<TInnerValue>
     {
-        TValue this[TKey key] { get; }
-
         IReadOnlySet<TKey> Keys { get; }
 
         IReadOnlyCollection<TValue> Values { get; }
+
+        TValue this[TKey key] { get; }
 
         bool ContainsKey(TKey key);
 

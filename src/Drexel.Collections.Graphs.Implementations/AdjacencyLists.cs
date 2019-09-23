@@ -7,7 +7,7 @@ using Drexel.Collections.Generic;
 
 namespace Drexel.Collections
 {
-    // This is a goofy way of sussing out the system "duplicate key" exception. Unfortunately, the ThrowHelper is
+    // This is a goofy way of sussing out the system "key not found" exception. Unfortunately, the ThrowHelper is
     // considered "internal" (which makes sense I guess, since it changed between Framework and Core), so there's no
     // way for us to easily throw the expected exception.
     internal static class AdjacencyLists
@@ -40,7 +40,6 @@ namespace Drexel.Collections
 
         public AdjacencyLists(IEqualityComparer<TKey> comparer)
         {
-            IReadOnlyDictionary<TKey, TValue> foo = default;
             this.comparer = comparer;
             this.dictionary = new Dictionary<TKey, TValue>(comparer);
             this.hasNull = false;
@@ -51,6 +50,12 @@ namespace Drexel.Collections
             this.Keys = new KeysSetAdapter(this);
             this.Values = new ValuesCollectionAdapter(this);
         }
+
+        public int Count => this.hasNull ? this.dictionary.Count + 1 : this.dictionary.Count;
+
+        public IReadOnlySet<TKey> Keys { get; }
+
+        public IReadOnlyCollection<TValue> Values { get; }
 
         public TValue this[TKey key]
         {
@@ -89,12 +94,6 @@ namespace Drexel.Collections
                 }
             }
         }
-
-        public int Count => this.hasNull ? this.dictionary.Count + 1 : this.dictionary.Count;
-
-        public IReadOnlySet<TKey> Keys { get; }
-
-        public IReadOnlyCollection<TValue> Values { get; }
 
         public bool Add(TKey key, TValue value)
         {

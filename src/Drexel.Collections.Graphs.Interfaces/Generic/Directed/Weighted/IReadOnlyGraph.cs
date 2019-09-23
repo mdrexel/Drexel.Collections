@@ -6,7 +6,7 @@ namespace Drexel.Collections.Generic.Directed.Weighted
         IReadOnlyPseudograph<T, W, E>
         where E : IReadOnlyEdge<T, W>
     {
-        IReadOnlySet<E> Edges { get; }
+        new IReadOnlySet<E> Edges { get; }
 
         new IReadOnlyCollection<StronglyConnected.IReadOnlyGraph<T, W, E>> GetStronglyConnectedComponents();
 
